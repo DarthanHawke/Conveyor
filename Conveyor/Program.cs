@@ -8,6 +8,7 @@ namespace Conveyor
 {
     static class Program
     {
+        public const int F_iThreadNumber = 4;
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>

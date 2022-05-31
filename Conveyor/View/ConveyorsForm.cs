@@ -13,54 +13,52 @@ namespace Conveyor.View
 {
     public partial class ConveyorsForm : Form
     {
-        private const int F_iThreadNumber = 4;
-        public delegate void ParameterizedThreadStart(object obj);
-        System.Threading.Timer[] timerConveyors = new System.Threading.Timer[F_iThreadNumber];
-        object locker = new object();
-        private Controller.ConveyorsController[] F_ccConveyorsMashine = new Controller.ConveyorsController[F_iThreadNumber];
+        private BackgroundWorker backgroundWorker;
+        private Controller.ConveyorsController[] F_ccConveyorsMashine = new Controller.ConveyorsController[Program.F_iThreadNumber];
         private Controller.LoaderController F_lclLoadersMashine = new Controller.LoaderController();
         private Models.ChiefEngineer chiefmech = new Models.ChiefEngineer();
         private Models.JuniorMechanic junmech = new Models.JuniorMechanic();
         private Models.SeniorMechanic senmech = new Models.SeniorMechanic();
-        Button[] buttonModel = new Button[F_iThreadNumber];
+        Button[] buttonModel = new Button[Program.F_iThreadNumber];
 
         public ConveyorsForm()
         {
             InitializeComponent();
+            backgroundWorker = new BackgroundWorker();
+            backgroundWorker.WorkerReportsProgress = true;
+            backgroundWorker.WorkerSupportsCancellation = true;
         }
 
-        private void initTread()
+        private void InitializeBackgroundWorker()
         {
-            TimerCallback tmConveyors = new TimerCallback(startConveyors);
-            for (int i = 0; i < timerConveyors.Length; ++i)
-            {
-                timerConveyors[i] = new System.Threading.Timer(tmConveyors, i, 0, 1);
-            }
+            backgroundWorker.DoWork += new DoWorkEventHandler(backgroundWorker_DoWork);
+            backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(backgroundWorker_ProgressChanged);
         }
 
-
-        private void startConveyors(object obj)
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            lock (locker)
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            int delay = 1000; // 1 second
+            int interval = 1;
+            int elapsed = 0;
+            while (!worker.CancellationPending)
             {
-                int i = (int)obj;
-                if (F_ccConveyorsMashine[i] != null)
+                elapsed = 0;
+                F_ccConveyorsMashine[0].conveyorOperation();
+                F_ccConveyorsMashine[0].conveyorIsBroken();
+                while (elapsed < interval && !worker.CancellationPending)
                 {
-                    if (F_ccConveyorsMashine[i].CC_cConveyor.C_bWorkStatus)
-                    {
-                        F_ccConveyorsMashine[i].conveyorOperation();
-                        if (buttonModel[i] != null)
-                        {
-                            this.buttonModel[i].Invoke((MethodInvoker)delegate
-                            {
-                                initParts(i);
-                                initConveyor(i);
-                            });
-                        }
-                        F_ccConveyorsMashine[i].conveyorIsBroken();
-                    }
+                    Thread.Sleep(delay);
                 }
             }
+            e.Cancel = true;
+        }
+
+        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            initParts(0);
+            initConveyor(0);
         }
 
 
@@ -72,7 +70,7 @@ namespace Conveyor.View
                 {
                     foreach (PictureBox obj in this.Controls.OfType<PictureBox>())
                     {
-                        if (obj.Location.X >= Models.Conveyors.C_iStep * 5 +500
+                        if (obj.Location.X >= Models.Conveyors.C_iStep * 5 + 500
                             && obj.Name == F_ccConveyorsMashine[i].CC_cConveyor.C_qConveyor.Peek().Name)
                         {
                             this.Controls.Remove(obj);
@@ -226,7 +224,6 @@ namespace Conveyor.View
             initLoader();
             initTimer();
             initButton();
-            initTread();
         }
     }
 }
