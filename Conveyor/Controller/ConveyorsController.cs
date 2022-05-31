@@ -60,7 +60,10 @@ namespace Conveyor.Controller
             {
                 foreach (var pPart in CC_cConveyor.C_qConveyor)
                 {
-                    pPart.Location = new Point(pPart.Location.X + 3, 52 + CC_iStartY);
+                    CC_cConveyor.C_pbConveer.Invoke((MethodInvoker)delegate
+                    {
+                        pPart.Location = new Point(pPart.Location.X + 3, 52 + CC_iStartY);
+                    });
                 }
                 if (CC_cConveyor.C_qConveyor.Count == 0)
                 {
@@ -77,7 +80,10 @@ namespace Conveyor.Controller
             {
                 foreach (var pPart in CC_cConveyor.C_qConveyor)
                 {
-                    pPart.Location = new Point(pPart.Location.X + 3, 52 + CC_iStartY);
+                    CC_cConveyor.C_pbConveer.Invoke((MethodInvoker)delegate
+                    {
+                        pPart.Location = new Point(pPart.Location.X + 3, 52 + CC_iStartY);
+                    });
                 }
                 if ((CC_cConveyor.C_qConveyor.Peek().Location.X - 325) % Models.Conveyors.C_iStep == 0)
                 {
@@ -96,7 +102,10 @@ namespace Conveyor.Controller
             {
                 foreach (var pPart in CC_cConveyor.C_qConveyor)
                 {
-                    pPart.Location = new Point(pPart.Location.X + 3, 52 + CC_iStartY);
+                    CC_cConveyor.C_pbConveer.Invoke((MethodInvoker)delegate
+                    {
+                        pPart.Location = new Point(pPart.Location.X + 3, 52 + CC_iStartY);
+                    });
                 }
                 if ((CC_cConveyor.C_qConveyor.Peek().Location.X - 325) >= Models.Conveyors.C_iStep * 5)
                 {

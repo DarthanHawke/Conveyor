@@ -55,11 +55,11 @@
     <Compile Include="Models\Mechanics.cs" />
     <Compile Include="Models\Parts.cs" />
     <Compile Include="Models\SeniorMechanic.cs" />
-    <Compile Include="View\Form1.cs">
+    <Compile Include="View\ConveyorsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="View\ConveyorsForm.Designer.cs">
+      <DependentUpon>ConveyorsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,8 +72,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="View\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="View\ConveyorsForm.resx">
+      <DependentUpon>ConveyorsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
