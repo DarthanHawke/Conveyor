@@ -8,6 +8,7 @@ namespace Conveyor.Models
 {
     class Parts
     {
+        public string Name { get; set; }
         public int P_iPosX { get; set; }
         public int P_iPosY { get; set; }
     }

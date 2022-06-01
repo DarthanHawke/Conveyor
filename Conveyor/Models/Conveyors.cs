@@ -10,9 +10,9 @@ namespace Conveyor.Models
 {
     class Conveyors
     {
-        public Queue<PictureBox> C_qConveyor = new Queue<PictureBox>();  // Детали конвеера
-        public Stack<PictureBox> C_qReserve = new Stack<PictureBox>();  // Запас деталей конвеера
-        public PictureBox C_pbConveer = new PictureBox();
+        public Queue<Parts> C_qConveyor = new Queue<Parts>();  // Детали конвеера
+        public Stack<Parts> C_qReserve = new Stack<Parts>();  // Запас деталей конвеера
+        public Parts C_pbConveer = new Parts();
         public const int C_iStep = 90;  // Шаг конвеера по оси Y
         public const int C_iNumParts = 5;   // Колличество деталей на конвеере
         public const int C_iHitbox = 100;   // Колличество единиц для починки

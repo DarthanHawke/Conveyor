@@ -11,7 +11,7 @@ namespace Conveyor.Controller
 {
     class ConveyorsController
     {
-        public Models.Conveyors CC_cConveyor = new Models.Conveyors();
+        public Models.Conveyors CC_cConveyor;
         private Random CC_rBreakdown = new Random();
         private int CC_iStartY { get; set; }
 
@@ -35,6 +35,7 @@ namespace Conveyor.Controller
 
         private void initializeConveyorsController(int startY)
         {
+            CC_cConveyor = new Models.Conveyors();
             CC_iStartY = startY;
             CC_cConveyor.C_bLoad = false;
             CC_cConveyor.C_bWorkStatus = true;
@@ -43,11 +44,14 @@ namespace Conveyor.Controller
 
         private void initConveyor()
         {
-            CC_cConveyor.C_pbConveer.Name = "conveer";
+            CC_cConveyor.C_pbConveer.P_iPosX = 700;
+            CC_cConveyor.C_pbConveer.P_iPosY = 150;
+
+            /*CC_cConveyor.C_pbConveer.Name = "conveer";
             CC_cConveyor.C_pbConveer.Image = Image.FromFile(@"../../Resources/conveyor.png");
             CC_cConveyor.C_pbConveer.Size = new System.Drawing.Size(700, 150);
             CC_cConveyor.C_pbConveer.Location = new Point(250, CC_iStartY);
-            CC_cConveyor.C_pbConveer.SizeMode = PictureBoxSizeMode.Zoom;
+            CC_cConveyor.C_pbConveer.SizeMode = PictureBoxSizeMode.Zoom;*/
         }
 
         // Операция конвеера
@@ -55,31 +59,35 @@ namespace Conveyor.Controller
         {
             // Если на конвеере есть свободное место и детали в запасе есть,
             // то двигаем конвеер и добавляем новую деталь
-            if (CC_cConveyor.C_qConveyor.Count < Models.Conveyors.C_iNumParts 
+            if (CC_cConveyor.C_qConveyor.Count < (Models.Conveyors.C_iNumParts) 
                 && CC_cConveyor.C_qReserve.Count > 0)
             {
                 foreach (var pPart in CC_cConveyor.C_qConveyor)
                 {
-                    pPart.Location = new Point(pPart.Location.X + 3, 52 + CC_iStartY);
+                    pPart.P_iPosX = pPart.P_iPosX + 1;
+                    pPart.P_iPosY = 35 + CC_iStartY;
                 }
+
                 if (CC_cConveyor.C_qConveyor.Count == 0)
                 {
                     CC_cConveyor.C_qConveyor.Enqueue(CC_cConveyor.C_qReserve.Pop());
                 }
-                else if ((CC_cConveyor.C_qConveyor.Peek().Location.X - 325) % Models.Conveyors.C_iStep == 0)
+                else if ((CC_cConveyor.C_qConveyor.Peek().P_iPosX - 325) % Models.Conveyors.C_iStep == 0)
                 {
                     CC_cConveyor.C_qConveyor.Enqueue(CC_cConveyor.C_qReserve.Pop());
                 }
             }
-            // Если на конвеере нет свободного места, а детали в запасе есть,
-            // то двигаем конвеер, удаляем готовую деталь и добавляем деталь новую деталь
-            if (CC_cConveyor.C_qConveyor.Count == Models.Conveyors.C_iNumParts)
+            // Если на конвеере нет свободного места,
+            // то двигаем конвеер, удаляем готовую деталь и добавляем деталь новую деталь, если есть
+            else if (CC_cConveyor.C_qConveyor.Count == Models.Conveyors.C_iNumParts)
             {
                 foreach (var pPart in CC_cConveyor.C_qConveyor)
                 {
-                    pPart.Location = new Point(pPart.Location.X + 3, 52 + CC_iStartY);
+                    pPart.P_iPosX = pPart.P_iPosX + 1;
+                    pPart.P_iPosY = 35 + CC_iStartY;
                 }
-                if ((CC_cConveyor.C_qConveyor.Peek().Location.X - 325) % Models.Conveyors.C_iStep == 0)
+
+                if ((CC_cConveyor.C_qConveyor.Peek().P_iPosX - 325) >= Models.Conveyors.C_iStep * 5)
                 {
                     CC_cConveyor.C_qConveyor.Dequeue();
                     if (CC_cConveyor.C_qReserve.Count > 0)
@@ -90,15 +98,17 @@ namespace Conveyor.Controller
             }
             // Если на конвеере есть свободное место, но деталей в запасе нет, а на конвеере ещё есть,
             // то двигаем конвеер и удаляем готовую деталь
-            if (CC_cConveyor.C_qConveyor.Count < Models.Conveyors.C_iNumParts 
+            else if (CC_cConveyor.C_qConveyor.Count < Models.Conveyors.C_iNumParts 
                 && CC_cConveyor.C_qReserve.Count == 0 
                 && CC_cConveyor.C_qConveyor.Count != 0)
             {
                 foreach (var pPart in CC_cConveyor.C_qConveyor)
                 {
-                    pPart.Location = new Point(pPart.Location.X + 3, 52 + CC_iStartY);
+                    pPart.P_iPosX = pPart.P_iPosX + 1;
+                    pPart.P_iPosY = 35 + CC_iStartY;
                 }
-                if ((CC_cConveyor.C_qConveyor.Peek().Location.X - 325) >= Models.Conveyors.C_iStep * 5)
+
+                if ((CC_cConveyor.C_qConveyor.Peek().P_iPosX - 325) >= Models.Conveyors.C_iStep * 5)
                 {
                     CC_cConveyor.C_qConveyor.Dequeue();
                 }

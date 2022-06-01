@@ -51,7 +51,7 @@ namespace Conveyor.Models
 
         public void repairLoader(ref Models.Conveyors CC_cConveyor)
         {
-            CE_pbChiefMech.Location = new Point(CC_cConveyor.C_pbConveer.Location.X + 80, CC_cConveyor.C_pbConveer.Location.Y);
+            CE_pbChiefMech.Location = new Point(CC_cConveyor.C_pbConveer.P_iPosX + 80, CC_cConveyor.C_pbConveer.P_iPosY);
             if (CE_iProgress < Conveyors.C_iHitbox)
             {
                 CE_iProgress += CE_iRepairSpeed;

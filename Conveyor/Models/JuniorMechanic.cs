@@ -34,7 +34,7 @@ namespace Conveyor.Models
 
         public void repairLoader(ref Models.Conveyors CC_cConveyor)
         {
-            JM_pbJunMech.Location = new Point(CC_cConveyor.C_pbConveer.Location.X + 80, CC_cConveyor.C_pbConveer.Location.Y);
+            JM_pbJunMech.Location = new Point(CC_cConveyor.C_pbConveer.P_iPosX + 80, CC_cConveyor.C_pbConveer.P_iPosY);
             if (JM_iProgress < Conveyors.C_iHitbox)
             {
                 JM_iProgress += JM_iRepairSpeed;
