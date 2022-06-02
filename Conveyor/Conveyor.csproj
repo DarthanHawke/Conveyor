@@ -48,13 +48,13 @@
   <ItemGroup>
     <Compile Include="Controller\ConveyorsController.cs" />
     <Compile Include="Controller\LoaderController.cs" />
-    <Compile Include="Models\ChiefEngineer.cs" />
+    <Compile Include="Controller\ChiefEngineer.cs" />
     <Compile Include="Models\Conveyors.cs" />
-    <Compile Include="Models\JuniorMechanic.cs" />
+    <Compile Include="Controller\JuniorMechanic.cs" />
     <Compile Include="Models\Loaders.cs" />
     <Compile Include="Models\Mechanics.cs" />
     <Compile Include="Models\Parts.cs" />
-    <Compile Include="Models\SeniorMechanic.cs" />
+    <Compile Include="Controller\SeniorMechanic.cs" />
     <Compile Include="View\ConveyorsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +92,7 @@
   <ItemGroup>
     <Content Include="Resources\chiefengineer.png" />
     <Content Include="Resources\clearloader.png" />
+    <Content Include="Resources\clearmechanic.png" />
     <Content Include="Resources\clearpart.png" />
     <Content Include="Resources\conveyor.png" />
     <Content Include="Resources\juniormechanic.png" />

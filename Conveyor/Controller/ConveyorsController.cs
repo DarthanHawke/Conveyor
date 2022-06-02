@@ -24,7 +24,7 @@ namespace Conveyor.Controller
         public ConveyorsController(int startY)
         {
             initializeConveyorsController(startY);
-            initConveyor();
+            initConveyor(startY);
         }
 
         private void initializeConveyorsController()
@@ -44,14 +44,15 @@ namespace Conveyor.Controller
 
         private void initConveyor()
         {
-            CC_cConveyor.C_pbConveer.P_iPosX = 700;
-            CC_cConveyor.C_pbConveer.P_iPosY = 150;
+            CC_cConveyor.C_pbConveer.P_iPosX = 250;
+            CC_cConveyor.C_pbConveer.P_iPosY = 30;
+        }
 
-            /*CC_cConveyor.C_pbConveer.Name = "conveer";
-            CC_cConveyor.C_pbConveer.Image = Image.FromFile(@"../../Resources/conveyor.png");
-            CC_cConveyor.C_pbConveer.Size = new System.Drawing.Size(700, 150);
-            CC_cConveyor.C_pbConveer.Location = new Point(250, CC_iStartY);
-            CC_cConveyor.C_pbConveer.SizeMode = PictureBoxSizeMode.Zoom;*/
+
+        private void initConveyor(int startY)
+        {
+            CC_cConveyor.C_pbConveer.P_iPosX = 250;
+            CC_cConveyor.C_pbConveer.P_iPosY = startY;
         }
 
         // Операция конвеера

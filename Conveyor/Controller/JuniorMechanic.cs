@@ -7,25 +7,29 @@ using System.Windows.Forms;
 using System.Drawing;
 
 
-namespace Conveyor.Models
+namespace Conveyor.Controller
 {
     // Данный класс имеет возможность создавать объект, способный ремонтировать конвеер.
     // При ремонте, конвеер не деспособен до починки
-    class JuniorMechanic : Mechanics
+    class JuniorMechanic : Models.Mechanics
     {
-        public PictureBox JM_pbJunMech = new PictureBox();
+        public Models.Parts JM_pbJunMech = new Models.Parts();
         public int JM_iRepairSpeed { get; set; }    // Скорость починки
         public int JM_iProgress { get; set; }   // Прогресс починки
         public bool CE_bBusyness { get; set; }  // True - свободен, False- занят
 
 
+        public JuniorMechanic()
+        {
+            initializeMechanic();
+        }
+
+
         public void initializeMechanic()
         {
             JM_pbJunMech.Name = "junmech";
-            JM_pbJunMech.Image = Image.FromFile(@"../../Resources/juniormechanic.png");
-            JM_pbJunMech.Size = new System.Drawing.Size(120, 180);
-            JM_pbJunMech.Location = new Point(1000, 500);
-            JM_pbJunMech.SizeMode = PictureBoxSizeMode.Zoom;
+            JM_pbJunMech.P_iPosX = 1100;
+            JM_pbJunMech.P_iPosY = 500;
             JM_iRepairSpeed = 5;
             JM_iProgress = 0;
             CE_bBusyness = true;
@@ -34,14 +38,17 @@ namespace Conveyor.Models
 
         public void repairLoader(ref Models.Conveyors CC_cConveyor)
         {
-            JM_pbJunMech.Location = new Point(CC_cConveyor.C_pbConveer.P_iPosX + 80, CC_cConveyor.C_pbConveer.P_iPosY);
-            if (JM_iProgress < Conveyors.C_iHitbox)
+            JM_pbJunMech.P_iPosX = CC_cConveyor.C_pbConveer.P_iPosX + 700;
+            JM_pbJunMech.P_iPosY = CC_cConveyor.C_pbConveer.P_iPosY;
+
+            if (JM_iProgress < Models.Conveyors.C_iHitbox)
             {
                 JM_iProgress += JM_iRepairSpeed;
             }
             else
             {
-                JM_pbJunMech.Location = new Point(1000, 500);
+                JM_pbJunMech.P_iPosX = 1100;
+                JM_pbJunMech.P_iPosY = 500;
                 CC_cConveyor.C_bWorkStatus = true;
                 JM_iProgress = 0;
             }

@@ -51,12 +51,6 @@ namespace Conveyor.Controller
         {
             LC_lLoader.L_pbLoader.P_iPosX = 50;
             LC_lLoader.L_pbLoader.P_iPosY = 230;
-
-            /*LC_lLoader.L_pbLoader.Name = "loader";
-            LC_lLoader.L_pbLoader.Image = Image.FromFile(@"../../Resources/loader.png");
-            LC_lLoader.L_pbLoader.Size = new System.Drawing.Size(120, 180);
-            LC_lLoader.L_pbLoader.Location = new Point(50, 230);
-            LC_lLoader.L_pbLoader.SizeMode = PictureBoxSizeMode.Zoom;*/
         }
 
         // Процесс загрузки деталей погрузщиком
@@ -66,12 +60,6 @@ namespace Conveyor.Controller
             newPart.Name = "part";
             newPart.P_iPosX = 325;
             newPart.P_iPosY = 65;
-
-            /*LC_lLoader.L_pbParts.Name = "part";
-            LC_lLoader.L_pbParts.Image = Image.FromFile(@"../../Resources/part.png");
-            LC_lLoader.L_pbParts.Location = new Point(325, 82);
-            LC_lLoader.L_pbParts.Size = new System.Drawing.Size(75, 37);
-            LC_lLoader.L_pbParts.SizeMode = PictureBoxSizeMode.Zoom;*/
             return newPart;
         }
 
