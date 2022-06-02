@@ -91,6 +91,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Resources\chiefengineer.png" />
+    <Content Include="Resources\clearloader.png" />
     <Content Include="Resources\clearpart.png" />
     <Content Include="Resources\conveyor.png" />
     <Content Include="Resources\juniormechanic.png" />

@@ -12,10 +12,19 @@ namespace Conveyor.Controller
     class LoaderController
     {
         public Models.Loaders LC_lLoader;
+        private int CC_iStartY { get; set; }
+
 
         public LoaderController()
         {
             initializeLoaderController();
+            initLoader();
+        }
+
+
+        public LoaderController(int startY)
+        {
+            initializeLoaderController(startY);
             initLoader();
         }
 
@@ -25,6 +34,16 @@ namespace Conveyor.Controller
             LC_lLoader = new Models.Loaders();
             LC_lLoader.L_iLoadBatch = 0;
             LC_lLoader.L_bLoading = false;
+            CC_iStartY = 0;
+        }
+
+
+        public void initializeLoaderController(int startY)
+        {
+            LC_lLoader = new Models.Loaders();
+            LC_lLoader.L_iLoadBatch = 0;
+            LC_lLoader.L_bLoading = false;
+            CC_iStartY = startY;
         }
 
 
@@ -62,7 +81,7 @@ namespace Conveyor.Controller
             if (LC_lLoader.L_iLoadBatch < Models.Loaders.L_iBatch)
             {
                 LC_lLoader.L_pbLoader.P_iPosX = 130;
-                LC_lLoader.L_pbLoader.P_iPosY = 30;
+                LC_lLoader.L_pbLoader.P_iPosY = CC_iStartY;
                 ++LC_lLoader.L_iLoadBatch;
                 CC_cConveyor.C_qReserve.Push(loadParts());
             }
