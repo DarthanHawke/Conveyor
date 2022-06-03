@@ -31,25 +31,35 @@ namespace Conveyor.Controller
             CE_pbChiefMech.Name = "chiefmech";
             CE_pbChiefMech.P_iPosX = 1100;
             CE_pbChiefMech.P_iPosY = 60;
-            CE_iRepairSpeed = 5;
+            CE_iRepairSpeed = 2;
             CE_iProgress = 0;
             CE_bBusyness = true;
         }
 
 
-        public void chiefOnField(ChiefEngineer chiefmech = null, SeniorMechanic senmech = null, JuniorMechanic junmech = null)
+        public void chiefOnField(SeniorMechanic senmech, JuniorMechanic junmech)
         {
-            chiefmech.CE_iRepairSpeed += 10;
-            senmech.SM_iRepairSpeed += 15;
-            junmech.JM_iRepairSpeed += 25;
+            if (senmech != null)
+            {
+                senmech.SM_iRepairSpeed += 15;
+            }
+            if (junmech != null)
+            {
+                junmech.JM_iRepairSpeed += 17;
+            }
         }
 
 
-        public void chiefOffField(ChiefEngineer chiefmech = null, SeniorMechanic senmech = null, JuniorMechanic junmech = null)
+        public void chiefOffField(SeniorMechanic senmech, JuniorMechanic junmech)
         {
-            chiefmech.CE_iRepairSpeed -= 10;
-            senmech.SM_iRepairSpeed -= 15;
-            junmech.JM_iRepairSpeed -= 25;
+            if (senmech != null)
+            {
+                senmech.SM_iRepairSpeed -= 15;
+            }
+            if (junmech != null)
+            {
+                junmech.JM_iRepairSpeed -= 17;
+            }
         }
 
 

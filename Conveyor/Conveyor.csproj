@@ -96,6 +96,7 @@
     <Content Include="Resources\clearmechanic.png" />
     <Content Include="Resources\clearpart.png" />
     <Content Include="Resources\conveyor.png" />
+    <Content Include="Resources\fire.png" />
     <Content Include="Resources\juniormechanic.png" />
     <Content Include="Resources\juniormechanicdisable.png" />
     <Content Include="Resources\loader.png" />

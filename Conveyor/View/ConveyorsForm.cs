@@ -33,6 +33,8 @@ namespace Conveyor.View
         private Graphics[] F_graphicsLoaders;
         private Graphics F_graphicsMechanic;
         private PictureBox[] F_pbDisableMichanics;
+        private Label[] F_lNameMechanics;
+        private Label[] F_lParametersMechanics;
 
         private Button[] F_buttonModelCreate;
         private Button[] F_buttonModelDestroy;
@@ -44,6 +46,7 @@ namespace Conveyor.View
         private Bitmap clearLoaderImage;
         private Bitmap partsImage;
         private Bitmap clearPartsImage;
+        private Bitmap fireImage;
         private Bitmap chiefmechImage;
         private Bitmap senmechImage;
         private Bitmap junmechImage;
@@ -68,6 +71,8 @@ namespace Conveyor.View
             F_graphicsLoaders = new Graphics[Program.F_iThreadNumber];
             F_graphicsMechanic = CreateGraphics();
             F_pbDisableMichanics = new PictureBox[3];
+            F_lNameMechanics = new Label[3];
+            F_lParametersMechanics = new Label[3];
 
             F_buttonModelCreate = new Button[Program.F_iThreadNumber];
             F_buttonModelDestroy = new Button[Program.F_iThreadNumber];
@@ -83,6 +88,7 @@ namespace Conveyor.View
             clearLoaderImage = new Bitmap(@"../../Resources/clearloader.png");
             partsImage = new Bitmap(@"../../Resources/part.png");
             clearPartsImage = new Bitmap(@"../../Resources/clearpart.png");
+            fireImage = new Bitmap(@"../../Resources/fire.png");
             chiefmechImage = new Bitmap(@"../../Resources/chiefengineerdisable.png");
             senmechImage = new Bitmap(@"../../Resources/seniormechanicdisable.png");
             junmechImage = new Bitmap(@"../../Resources/juniormechanicdisable.png");
@@ -102,6 +108,7 @@ namespace Conveyor.View
             initializeModels();
             initializeImage();
             initializeButton();
+            initializeImageMechanic();
         }
 
 
@@ -202,7 +209,14 @@ namespace Conveyor.View
 
         private void paintParts(int numThread)
         {
-            F_graphicsParts[numThread].DrawImage(clearPartsImage, 250, 160 * numThread + 30);
+            if (F_ccConveyorsMashine[numThread].CC_cConveyor.C_bWorkStatus == true)
+            {
+                F_graphicsParts[numThread].DrawImage(clearPartsImage, 250, 160 * numThread + 30);
+            }
+            else
+            {
+                F_graphicsParts[numThread].DrawImage(fireImage, 250, 160 * numThread + 30);
+            }
             if (F_ccConveyorsMashine[numThread].CC_cConveyor.C_qConveyor.Count != 0)
             {
                 foreach (var part in F_ccConveyorsMashine[numThread].CC_cConveyor.C_qConveyor)
@@ -240,15 +254,35 @@ namespace Conveyor.View
             {
                 case 0:
                     F_ceChiefmech = new Controller.ChiefEngineer();
+                    F_ceChiefmech.chiefOnField(F_smSenmech, F_jmJunmech);
                     chiefmechImage = new Bitmap(@"../../Resources/chiefengineer.png");
+                    F_lParametersMechanics[0].Text = "Repair speed = " + F_ceChiefmech.CE_iRepairSpeed.ToString();
+                    if (F_smSenmech != null)
+                    {
+                        F_lParametersMechanics[1].Text = "Repair speed = " + F_smSenmech.SM_iRepairSpeed.ToString();
+                    }
+                    if (F_jmJunmech != null)
+                    {
+                        F_lParametersMechanics[2].Text = "Repair speed = " + F_jmJunmech.JM_iRepairSpeed.ToString();
+                    }
                     break;
                 case 1:
                     F_smSenmech = new Controller.SeniorMechanic();
+                    if (F_ceChiefmech != null)
+                    {
+                        F_ceChiefmech.chiefOnField(F_smSenmech, null);
+                    }
                     senmechImage = new Bitmap(@"../../Resources/seniormechanic.png");
+                    F_lParametersMechanics[1].Text = "Repair speed = " + F_smSenmech.SM_iRepairSpeed.ToString();
                     break;
                 case 2:
                     F_jmJunmech = new Controller.JuniorMechanic();
+                    if (F_ceChiefmech != null)
+                    {
+                        F_ceChiefmech.chiefOnField(null, F_jmJunmech);
+                    }
                     junmechImage = new Bitmap(@"../../Resources/juniormechanic.png");
+                    F_lParametersMechanics[2].Text = "Repair speed = " + F_jmJunmech.JM_iRepairSpeed.ToString();
                     break;
             }
         }
@@ -260,16 +294,33 @@ namespace Conveyor.View
             {
                 case 0:
                     while (!F_ceChiefmech.CE_bBusyness) { }
+                    F_ceChiefmech.chiefOffField(F_smSenmech, F_jmJunmech);
                     F_ceChiefmech = null;
                     chiefmechImage = new Bitmap(@"../../Resources/chiefengineerdisable.png");
+                    if (F_smSenmech != null)
+                    {
+                        F_lParametersMechanics[1].Text = "Repair speed = " + F_smSenmech.SM_iRepairSpeed.ToString();
+                    }
+                    if (F_jmJunmech != null)
+                    {
+                        F_lParametersMechanics[2].Text = "Repair speed = " + F_jmJunmech.JM_iRepairSpeed.ToString();
+                    }
                     break;
                 case 1:
                     while (!F_smSenmech.CE_bBusyness) { }
+                    if (F_ceChiefmech != null)
+                    {
+                        F_ceChiefmech.chiefOffField(F_smSenmech, null);
+                    }
                     F_smSenmech = null;
                     senmechImage = new Bitmap(@"../../Resources/seniormechanicdisable.png");
                     break;
                 case 2:
                     while (!F_jmJunmech.CE_bBusyness) { }
+                    if (F_ceChiefmech != null)
+                    {
+                        F_ceChiefmech.chiefOffField(null, F_jmJunmech);
+                    }
                     F_jmJunmech = null;
                     junmechImage = new Bitmap(@"../../Resources/juniormechanicdisable.png");
                     break;
@@ -315,13 +366,13 @@ namespace Conveyor.View
                     if (!F_ccConveyorsMashine[i].CC_cConveyor.C_bWorkStatus
                         && !F_ccConveyorsMashine[i].CC_cConveyor.C_bRepairStatus)
                     {
-                        if (F_ceChiefmech != null && findMechanic == false)
+                        if (F_jmJunmech != null && findMechanic == false)
                         {
-                            if (F_ceChiefmech.CE_bBusyness)
+                            if (F_jmJunmech.CE_bBusyness)
                             {
                                 findMechanic = true;
-                                F_ceChiefmech.CE_bBusyness = false;
-                                F_iLoaderMechanic[0] = i;
+                                F_jmJunmech.CE_bBusyness = false;
+                                F_iLoaderMechanic[2] = i;
                             }
                         }
                         if (F_smSenmech != null && findMechanic == false)
@@ -333,13 +384,13 @@ namespace Conveyor.View
                                 F_iLoaderMechanic[1] = i;
                             }
                         }
-                        if (F_jmJunmech != null && findMechanic == false)
+                        if (F_ceChiefmech != null && findMechanic == false)
                         {
-                            if (F_jmJunmech.CE_bBusyness)
+                            if (F_ceChiefmech.CE_bBusyness)
                             {
                                 findMechanic = true;
-                                F_jmJunmech.CE_bBusyness = false;
-                                F_iLoaderMechanic[2] = i;
+                                F_ceChiefmech.CE_bBusyness = false;
+                                F_iLoaderMechanic[0] = i;
                             }
                         }
                     }
@@ -422,9 +473,6 @@ namespace Conveyor.View
         {
             for (int i = 0; i < F_buttonMechanicCreate.Length; ++i)
             {
-                F_pbDisableMichanics[i] = new PictureBox();
-                F_pbDisableMichanics[i].Size = new Size(114, 134);
-                F_pbDisableMichanics[i].SizeMode = PictureBoxSizeMode.Zoom;
                 F_buttonMechanicCreate[i] = new Button();
                 F_buttonMechanicCreate[i].Enabled = true;
                 F_buttonMechanicCreate[i].Visible = true;
@@ -433,14 +481,7 @@ namespace Conveyor.View
                 F_buttonMechanicCreate[i].Text = "Recruit";
                 F_buttonMechanicCreate[i].Font = new Font("Arial", 12, FontStyle.Bold);
                 this.Controls.Add(F_buttonMechanicCreate[i]);
-                this.Controls.Add(F_pbDisableMichanics[i]);
             }
-            F_pbDisableMichanics[0].Image = new Bitmap(@"../../Resources/chiefengineerdisable.png");
-            F_pbDisableMichanics[0].Location = new Point(1100, 60);
-            F_pbDisableMichanics[1].Image = new Bitmap(@"../../Resources/seniormechanicdisable.png");
-            F_pbDisableMichanics[1].Location = new Point(1100, 280);
-            F_pbDisableMichanics[2].Image = new Bitmap(@"../../Resources/juniormechanicdisable.png");
-            F_pbDisableMichanics[2].Location = new Point(1100, 500);
             F_buttonMechanicCreate[0].Click += buttonMechanicCreateOne_Click;
             F_buttonMechanicCreate[1].Click += buttonMechanicCreateTwo_Click;
             F_buttonMechanicCreate[2].Click += buttonMechanicCreateThree_Click;
@@ -463,6 +504,44 @@ namespace Conveyor.View
             F_buttonMechanicDestroy[0].Click += buttonMechanicDestroyOne_Click;
             F_buttonMechanicDestroy[1].Click += buttonMechanicDestroyTwo_Click;
             F_buttonMechanicDestroy[2].Click += buttonMechanicDestroyThree_Click;
+        }
+
+
+        private void initializeImageMechanic()
+        {
+            for (int i = 0; i < F_pbDisableMichanics.Length; ++i)
+            {
+                F_pbDisableMichanics[i] = new PictureBox();
+                F_pbDisableMichanics[i].Visible = true;
+                F_pbDisableMichanics[i].Size = new Size(114, 134);
+                F_pbDisableMichanics[i].SizeMode = PictureBoxSizeMode.Zoom;
+                this.Controls.Add(F_pbDisableMichanics[i]);
+                F_lNameMechanics[i] = new Label();
+                F_lNameMechanics[i].Visible = true;
+                F_lNameMechanics[i].Size = new Size(170, 20);
+                F_lNameMechanics[i].Font = new Font("Arial", 13, FontStyle.Bold);
+                this.Controls.Add(F_lNameMechanics[i]);
+                F_lParametersMechanics[i] = new Label();
+                F_lParametersMechanics[i].Visible = false;
+                F_lParametersMechanics[i].Size = new Size(170, 20);
+                F_lParametersMechanics[i].Font = new Font("Arial", 11, FontStyle.Regular);
+                this.Controls.Add(F_lParametersMechanics[i]);
+            }
+            F_pbDisableMichanics[0].Image = new Bitmap(@"../../Resources/chiefengineerdisable.png");
+            F_lNameMechanics[0].Text = "Chief Engineer";
+            F_pbDisableMichanics[0].Location = new Point(1100, 60);
+            F_lNameMechanics[0].Location = new Point(1100, 20);
+            F_lParametersMechanics[0].Location = new Point(1100, 40);
+            F_pbDisableMichanics[1].Image = new Bitmap(@"../../Resources/seniormechanicdisable.png");
+            F_lNameMechanics[1].Text = "Senior Mechanic";
+            F_pbDisableMichanics[1].Location = new Point(1100, 280);
+            F_lNameMechanics[1].Location = new Point(1100, 240);
+            F_lParametersMechanics[1].Location = new Point(1100, 260);
+            F_pbDisableMichanics[2].Image = new Bitmap(@"../../Resources/juniormechanicdisable.png");
+            F_lNameMechanics[2].Text = "Junior Mechanic";
+            F_pbDisableMichanics[2].Location = new Point(1100, 500);
+            F_lNameMechanics[2].Location = new Point(1100, 460);
+            F_lParametersMechanics[2].Location = new Point(1100, 480);
         }
 
         // Кнопки для создания новой модели конвеера
@@ -533,6 +612,7 @@ namespace Conveyor.View
         private void buttonMechanicCreateOne_Click(object sender, EventArgs e)
         {
             F_pbDisableMichanics[0].Visible = false;
+            F_lParametersMechanics[0].Visible = true;
             F_buttonMechanicCreate[0].Enabled = false;
             F_buttonMechanicDestroy[0].Enabled = true;
             initializeMechanic(0);
@@ -543,6 +623,7 @@ namespace Conveyor.View
         private void buttonMechanicCreateTwo_Click(object sender, EventArgs e)
         {
             F_pbDisableMichanics[1].Visible = false;
+            F_lParametersMechanics[1].Visible = true;
             F_buttonMechanicCreate[1].Enabled = false;
             F_buttonMechanicDestroy[1].Enabled = true;
             initializeMechanic(1);
@@ -553,6 +634,7 @@ namespace Conveyor.View
         private void buttonMechanicCreateThree_Click(object sender, EventArgs e)
         {
             F_pbDisableMichanics[2].Visible = false;
+            F_lParametersMechanics[2].Visible = true;
             F_buttonMechanicCreate[2].Enabled = false;
             F_buttonMechanicDestroy[2].Enabled = true;
             initializeMechanic(2);
@@ -563,6 +645,7 @@ namespace Conveyor.View
         private void buttonMechanicDestroyOne_Click(object sender, EventArgs e)
         {
             F_pbDisableMichanics[0].Visible = true;
+            F_lParametersMechanics[0].Visible = false;
             F_buttonMechanicCreate[0].Enabled = true;
             F_buttonMechanicDestroy[0].Enabled = false;
             destructMechanic(0);
@@ -573,6 +656,7 @@ namespace Conveyor.View
         private void buttonMechanicDestroyTwo_Click(object sender, EventArgs e)
         {
             F_pbDisableMichanics[1].Visible = true;
+            F_lParametersMechanics[1].Visible = false;
             F_buttonMechanicCreate[1].Enabled = true;
             F_buttonMechanicDestroy[1].Enabled = false;
             destructMechanic(1);
@@ -583,6 +667,7 @@ namespace Conveyor.View
         private void buttonMechanicDestroyThree_Click(object sender, EventArgs e)
         {
             F_pbDisableMichanics[2].Visible = true;
+            F_lParametersMechanics[2].Visible = false;
             F_buttonMechanicCreate[2].Enabled = true;
             F_buttonMechanicDestroy[2].Enabled = false;
             destructMechanic(2);
