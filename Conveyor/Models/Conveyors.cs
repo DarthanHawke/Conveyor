@@ -19,5 +19,6 @@ namespace Conveyor.Models
         public const float C_fReliability = 0.991f;   // Надёжность конвеера(вероятность не сломаться при движении деталей)
         public bool C_bLoad { get; set; }   // True - Конвеер загружен, False - пустой
         public bool C_bWorkStatus { get; set; }   // True - Конвеер исправен, False - сломан
+        public bool C_bRepairStatus { get; set; }   // True - Конвеер ремонттируется, False - Не ремонтируется
     }
 }

@@ -59,7 +59,7 @@ namespace Conveyor.Controller
             Models.Parts newPart = new Models.Parts();
             newPart.Name = "part";
             newPart.P_iPosX = 325;
-            newPart.P_iPosY = 65;
+            newPart.P_iPosY = CC_iStartY + 35;
             return newPart;
         }
 

@@ -30,7 +30,7 @@ namespace Conveyor.Controller
             JM_pbJunMech.Name = "junmech";
             JM_pbJunMech.P_iPosX = 1100;
             JM_pbJunMech.P_iPosY = 500;
-            JM_iRepairSpeed = 5;
+            JM_iRepairSpeed = 3;
             JM_iProgress = 0;
             CE_bBusyness = true;
         }
@@ -49,7 +49,9 @@ namespace Conveyor.Controller
             {
                 JM_pbJunMech.P_iPosX = 1100;
                 JM_pbJunMech.P_iPosY = 500;
+                CE_bBusyness = true;
                 CC_cConveyor.C_bWorkStatus = true;
+                CC_cConveyor.C_bRepairStatus = false;
                 JM_iProgress = 0;
             }
         }
@@ -57,6 +59,8 @@ namespace Conveyor.Controller
 
         public void controlRepair(ref Models.Conveyors CC_cConveyor)
         {
+            CE_bBusyness = false;
+            CC_cConveyor.C_bRepairStatus = true;
             if (CC_cConveyor.C_bWorkStatus == false)
             {
                 repairLoader(ref CC_cConveyor);

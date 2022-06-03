@@ -28,9 +28,9 @@ namespace Conveyor.Controller
         public void initializeMechanic()
         {
             SM_pbSenMech.Name = "senmech";
-            SM_pbSenMech.P_iPosX = 1050;
-            SM_pbSenMech.P_iPosY = 250;
-            SM_iRepairSpeed = 15;
+            SM_pbSenMech.P_iPosX = 1100;
+            SM_pbSenMech.P_iPosY = 280;
+            SM_iRepairSpeed = 7;
             SM_iProgress = 0;
             CE_bBusyness = true;
         }
@@ -46,9 +46,11 @@ namespace Conveyor.Controller
             }
             else
             {
-                SM_pbSenMech.P_iPosX = 1050;
-                SM_pbSenMech.P_iPosY = 250;
+                SM_pbSenMech.P_iPosX = 1100;
+                SM_pbSenMech.P_iPosY = 280;
+                CE_bBusyness = true;
                 CC_cConveyor.C_bWorkStatus = true;
+                CC_cConveyor.C_bRepairStatus = false;
                 SM_iProgress = 0;
             }
         }
@@ -56,6 +58,8 @@ namespace Conveyor.Controller
 
         public void controlRepair(ref Models.Conveyors CC_cConveyor)
         {
+            CE_bBusyness = false;
+            CC_cConveyor.C_bRepairStatus = true;
             if (CC_cConveyor.C_bWorkStatus == false)
             {
                 repairLoader(ref CC_cConveyor);

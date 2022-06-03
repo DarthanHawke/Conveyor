@@ -30,8 +30,8 @@ namespace Conveyor.Controller
         {
             CE_pbChiefMech.Name = "chiefmech";
             CE_pbChiefMech.P_iPosX = 1100;
-            CE_pbChiefMech.P_iPosY = 50;
-            CE_iRepairSpeed = 10;
+            CE_pbChiefMech.P_iPosY = 60;
+            CE_iRepairSpeed = 5;
             CE_iProgress = 0;
             CE_bBusyness = true;
         }
@@ -64,8 +64,10 @@ namespace Conveyor.Controller
             else
             {
                 CE_pbChiefMech.P_iPosX = 1100;
-                CE_pbChiefMech.P_iPosY = 0;
+                CE_pbChiefMech.P_iPosY = 60;
+                CE_bBusyness = true;
                 CC_cConveyor.C_bWorkStatus = true;
+                CC_cConveyor.C_bRepairStatus = false;
                 CE_iProgress = 0;
             }
         }
@@ -73,6 +75,8 @@ namespace Conveyor.Controller
 
         public void controlRepair(ref Models.Conveyors CC_cConveyor)
         {
+            CE_bBusyness = false;
+            CC_cConveyor.C_bRepairStatus = true;
             if (CC_cConveyor.C_bWorkStatus == false)
             {
                 repairLoader(ref CC_cConveyor);

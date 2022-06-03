@@ -29,8 +29,11 @@ namespace Conveyor.Controller
 
         private void initializeConveyorsController()
         {
+            CC_cConveyor = new Models.Conveyors();
+            CC_iStartY = 0;
             CC_cConveyor.C_bLoad = false;
             CC_cConveyor.C_bWorkStatus = true;
+            CC_cConveyor.C_bRepairStatus = false;
         }
 
         private void initializeConveyorsController(int startY)
@@ -39,6 +42,7 @@ namespace Conveyor.Controller
             CC_iStartY = startY;
             CC_cConveyor.C_bLoad = false;
             CC_cConveyor.C_bWorkStatus = true;
+            CC_cConveyor.C_bRepairStatus = false;
         }
 
 
