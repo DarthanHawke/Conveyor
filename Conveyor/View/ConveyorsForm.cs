@@ -121,6 +121,7 @@ namespace Conveyor.View
         // Инициализируем и запускаем потоки
         private void initializeThread(int numThread)
         {
+            // При инициализации потока указываем делегат, передающий объект в поток
             F_thread[numThread] = new Thread((obj) => startConveyors(obj));
 
             F_thread[numThread].Start(numThread);
@@ -142,6 +143,8 @@ namespace Conveyor.View
             }
         }
 
+        ConveyorDelegate F_cConveyor;
+        delegate void ConveyorDelegate(object obj);
         // Запускаем конвеер
         private void startConveyors(object obj)
         {
@@ -167,6 +170,7 @@ namespace Conveyor.View
             // Вешаем таймер на сам конвеер
             TimerCallback tmConveyors = new TimerCallback(conveyorsTick);
             System.Threading.Timer timerConveyors = new System.Threading.Timer(tmConveyors, numThread, 0, 100);
+            // p.s. TimerCallback представляет собой делегат =)
 
             // Бесконечный цикл, пока не заврешится поток принудительно, или не будет получен сигнал с кнопки удаления конвеера
             while (F_thread[numThread].IsAlive && F_threadStatus[numThread] == true) { }
