@@ -10,7 +10,6 @@ using System.Drawing;
 namespace Conveyor.Controller
 {
     // Данный класс имеет возможность создавать объект, способный ремонтировать конвеер.
-    // При этом, сразу же при начале ремонтных работ конвеер возобнавляет работу.
     // Более того, если данный объект класса добавлен в модель, то другие существующие механики получают бонус к скорости ремонта.
     class ChiefEngineer : Models.Mechanics
     {
@@ -41,7 +40,7 @@ namespace Conveyor.Controller
         {
             if (senmech != null)
             {
-                senmech.SM_iRepairSpeed += 15;
+                senmech.SM_iRepairSpeed += 10;
             }
             if (junmech != null)
             {
@@ -54,7 +53,7 @@ namespace Conveyor.Controller
         {
             if (senmech != null)
             {
-                senmech.SM_iRepairSpeed -= 15;
+                senmech.SM_iRepairSpeed -= 10;
             }
             if (junmech != null)
             {
